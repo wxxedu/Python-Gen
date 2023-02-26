@@ -2,7 +2,6 @@ pub mod py_model;
 
 #[cfg(test)]
 mod tests {
-    use super::*;
     use crate::py_model::{
         PyClosure, PyCond, PyFunc, PyIf, PyLine, PyModelCore, PY_TRUE,
     };
