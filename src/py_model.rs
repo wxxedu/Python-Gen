@@ -1,9 +1,15 @@
-use crate::py_model::PyModel::{Elif, For, Func, If, Line, While};
+use crate::py_model::PyModel::{Elif, For, Func, FuncInvoke, If, Line, While};
 use std::fmt::{Display, Formatter};
 use std::fs::File;
 use std::io::Write;
 
-const PYINDENT: &str = "    ";
+pub const PY_INDENT: &str = "    ";
+
+pub const PY_TRUE: &str = "True";
+
+pub const PY_FALSE: &str = "False";
+
+pub const PY_NONE: &str = "None";
 
 pub trait PyToLines {
     fn to_lines(&self) -> Vec<String>;
@@ -34,7 +40,7 @@ pub trait PyClosure {
             self.get_body()
                 .iter()
                 .flat_map(|x| x.to_lines())
-                .map(|line| format!("{}{}", PYINDENT, line))
+                .map(|line| format!("{}{}", PY_INDENT, line))
                 .collect::<Vec<String>>(),
         );
         res.extend(self.get_closing_lines());
@@ -50,6 +56,7 @@ pub enum PyModel {
     For(PyFor),
     While(PyWhile),
     Func(PyFunc),
+    FuncInvoke(PyFunc),
 }
 
 impl Display for PyModel {
@@ -76,6 +83,7 @@ impl PyToLines for PyModel {
             For(val) => val.to_lines(),
             While(val) => val.to_lines(),
             Func(val) => val.to_lines(),
+            FuncInvoke(val) => vec![val.invoke_str()],
         }
     }
 }
@@ -264,6 +272,14 @@ impl PyFunc {
     pub fn clear_params(&mut self) {
         self.params.clear();
     }
+
+    pub fn invoke(&self) -> PyModel {
+        FuncInvoke(self.clone())
+    }
+
+    fn invoke_str(&self) -> String {
+        format!("{}({})", self.ident, self.params.join(", "))
+    }
 }
 
 impl PyClosure for PyFunc {
@@ -283,7 +299,7 @@ impl PyClosure for PyFunc {
         let mut res = vec![];
         match &self.return_val {
             None => {}
-            Some(rtn) => res.push(format!("{}return {}", PYINDENT, rtn)),
+            Some(rtn) => res.push(format!("{}return {}", PY_INDENT, rtn)),
         }
         res.push("".to_string());
         res
