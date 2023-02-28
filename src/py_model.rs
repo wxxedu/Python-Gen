@@ -1,12 +1,15 @@
 use crate::py_core::py_closure::PyClosure;
 use crate::py_core::py_to_lines::PyToLines;
+use crate::py_model::py_doc::PyDoc;
 use crate::py_model::py_elif::PyElif;
 use crate::py_model::py_for::PyFor;
 use crate::py_model::py_func::PyFunc;
 use crate::py_model::py_if::PyIf;
 use crate::py_model::py_line::PyLine;
 use crate::py_model::py_while::PyWhile;
-use crate::py_model::PyModel::{Elif, For, Func, FuncInvoke, If, Line, While};
+use crate::py_model::PyModel::{
+    Doc, Elif, For, Func, FuncInvoke, If, Line, While,
+};
 use std::fmt::{Display, Formatter};
 use std::fs::File;
 use std::io::Write;
@@ -63,6 +66,7 @@ impl PyToLines for PyModel {
             While(val) => val.to_lines(),
             Func(val) => val.to_lines(),
             FuncInvoke(val) => vec![val.invoke_str()],
+            Doc(val) => val.to_lines(),
         }
     }
 }
