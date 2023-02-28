@@ -37,7 +37,7 @@ impl PyFunc {
         FuncInvoke(self.clone())
     }
 
-    fn invoke_str(&self) -> String {
+    pub(crate) fn invoke_str(&self) -> String {
         format!("{}({})", self.ident, self.params.join(", "))
     }
 }
