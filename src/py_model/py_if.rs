@@ -4,10 +4,26 @@ use crate::py_core::py_model_core::PyModelCore;
 use crate::py_model::PyModel;
 use crate::py_model::PyModel::If;
 
+#[macro_export]
+macro_rules! py_if {
+    ($cond: expr) => {
+        PyIf::new(&format!("{}", $cond))
+    };
+}
+
 #[derive(Debug, Clone, Default)]
 pub struct PyIf {
     cond: String,
     body: Vec<PyModel>,
+}
+
+impl PyIf {
+    pub fn new(cond: &str) -> Self {
+        Self {
+            cond: cond.to_string(),
+            body: vec![],
+        }
+    }
 }
 
 impl PyClosure for PyIf {
@@ -33,5 +49,16 @@ impl PyModelCore for PyIf {
 impl PyCond for PyIf {
     fn set_cond(&mut self, name: &str) {
         self.cond = name.to_string();
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_py_if_expansion() {
+        let if_ = py_if!("hello");
+        dbg!(if_);
     }
 }
