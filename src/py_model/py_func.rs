@@ -61,7 +61,6 @@ impl PyClosure for PyFunc {
             None => {}
             Some(rtn) => res.push(format!("{}return {}", PY_INDENT, rtn)),
         }
-        res.push("".to_string());
         res
     }
 }
