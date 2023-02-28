@@ -3,8 +3,8 @@ use crate::py_core::py_closure::PyClosure;
 use crate::py_core::py_model_core::PyModelCore;
 use crate::py_model::PyModel;
 use crate::py_model::PyModel::{Func, FuncInvoke};
-use std::process::id;
 
+#[macro_export]
 macro_rules! py_func {
     ($x: expr, $($p: expr), *) => {
         PyFunc::new($x, vec![$(format!("{}", $p)), *])
