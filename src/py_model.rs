@@ -23,6 +23,8 @@ pub mod py_while;
 
 pub mod py_func;
 
+pub mod py_doc;
+
 /// The enum representing a Python model
 #[derive(Debug, Clone)]
 pub enum PyModel {
@@ -33,6 +35,7 @@ pub enum PyModel {
     While(PyWhile),
     Func(PyFunc),
     FuncInvoke(PyFunc),
+    Doc(PyDoc),
 }
 
 impl Display for PyModel {

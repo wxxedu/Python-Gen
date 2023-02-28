@@ -10,7 +10,7 @@ pub trait PyClosure {
     fn get_body(&self) -> &Vec<PyModel>;
 
     fn get_closing_lines(&self) -> Vec<String> {
-        vec!["".to_string()]
+        vec![]
     }
 
     fn to_lines(&self) -> Vec<String> {
