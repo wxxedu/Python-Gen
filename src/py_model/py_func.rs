@@ -3,6 +3,13 @@ use crate::py_core::py_closure::PyClosure;
 use crate::py_core::py_model_core::PyModelCore;
 use crate::py_model::PyModel;
 use crate::py_model::PyModel::{Func, FuncInvoke};
+use std::process::id;
+
+macro_rules! py_func {
+    ($x: expr, $($p: expr), *) => {
+        PyFunc::new($x, vec![$(format!("{}", $p)), *])
+    };
+}
 
 #[derive(Debug, Clone, Default)]
 pub struct PyFunc {
@@ -13,7 +20,21 @@ pub struct PyFunc {
 }
 
 impl PyFunc {
+    pub fn new(ident: &str, params: Vec<String>) -> Self {
+        Self {
+            ident: ident.to_string(),
+            params,
+            body: vec![],
+            return_val: None,
+        }
+    }
+
+    #[deprecated(note = "this function is replaced by set_name()")]
     pub fn rename(&mut self, name: &str) {
+        self.ident = name.to_string();
+    }
+
+    pub fn set_name(&mut self, name: &str) {
         self.ident = name.to_string();
     }
 
@@ -68,5 +89,16 @@ impl PyClosure for PyFunc {
 impl PyModelCore for PyFunc {
     fn to_model(&self) -> PyModel {
         Func(self.clone())
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_py_func_macro() {
+        let func = py_func!("hello", "h");
+        dbg!(func);
     }
 }
