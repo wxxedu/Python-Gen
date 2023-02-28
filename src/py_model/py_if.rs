@@ -6,8 +6,8 @@ use crate::py_model::PyModel::If;
 
 #[macro_export]
 macro_rules! py_if {
-    ($cond: expr) => {
-        PyIf::new(&format!("{}", $cond))
+    ($($x: expr), +) => {
+        PyIf::new(&format!($($x), +))
     };
 }
 
@@ -58,7 +58,7 @@ mod tests {
 
     #[test]
     fn test_py_if_expansion() {
-        let if_ = py_if!("hello");
+        let if_ = py_if!("{} == 1", 1);
         dbg!(if_);
     }
 }

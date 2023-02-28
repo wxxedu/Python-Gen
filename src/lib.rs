@@ -18,7 +18,7 @@ mod tests {
         let mut file = File::create("./generated/if.py").unwrap();
 
         let mut py_print = PyFunc::default();
-        py_print.rename("print");
+        py_print.set_name("print");
         py_print.add_param("'hello'");
 
         let mut iff = PyIf::default();
