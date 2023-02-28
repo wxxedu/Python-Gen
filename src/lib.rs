@@ -1,10 +1,16 @@
 pub mod py_model;
 
+pub mod constants;
+pub mod py_core;
+
 #[cfg(test)]
 mod tests {
-    use crate::py_model::{
-        PyClosure, PyCond, PyFunc, PyIf, PyLine, PyModelCore, PY_TRUE,
-    };
+    use crate::constants::PY_TRUE;
+    use crate::py_core::py_closure::PyClosure;
+    use crate::py_core::py_cond::PyCond;
+    use crate::py_core::py_model_core::PyModelCore;
+    use crate::py_model::py_func::PyFunc;
+    use crate::py_model::py_if::PyIf;
     use std::fs::File;
 
     #[test]
