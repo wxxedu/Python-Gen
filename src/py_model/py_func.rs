@@ -14,6 +14,7 @@ macro_rules! py_func {
 #[derive(Debug, Clone, Default)]
 pub struct PyFunc {
     ident: String,
+    is_method: bool,
     params: Vec<String>,
     body: Vec<PyModel>,
     return_val: Option<String>,
@@ -23,6 +24,7 @@ impl PyFunc {
     pub fn new(ident: &str, params: Vec<String>) -> Self {
         Self {
             ident: ident.to_string(),
+            is_method: true,
             params,
             body: vec![],
             return_val: None,
@@ -32,6 +34,16 @@ impl PyFunc {
     #[deprecated(note = "this function is replaced by set_name()")]
     pub fn rename(&mut self, name: &str) {
         self.ident = name.to_string();
+    }
+
+    /// Makes this function as a method, see [PyFunc::make_func]
+    pub fn make_method(&mut self) {
+        self.is_method = true;
+    }
+
+    /// Makes this function as a function, see [PyFunc::make_method]
+    pub fn make_func(&mut self) {
+        self.is_method = false;
     }
 
     pub fn set_name(&mut self, name: &str) {
@@ -69,7 +81,11 @@ impl PyClosure for PyFunc {
     }
 
     fn get_signature(&self) -> String {
-        format!("def {}({}):", self.ident, self.params.join(", "))
+        if self.is_method {
+            format!("def {}(self, {}):", self.ident, self.params.join(", "))
+        } else {
+            format!("def {}({}):", self.ident, self.params.join(", "))
+        }
     }
 
     fn get_body(&self) -> &Vec<PyModel> {
