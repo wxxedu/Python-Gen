@@ -28,6 +28,8 @@ pub mod py_func;
 
 pub mod py_doc;
 
+pub mod py_class;
+
 /// The enum representing a Python model
 #[derive(Debug, Clone)]
 pub enum PyModel {
