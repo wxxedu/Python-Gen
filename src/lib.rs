@@ -1,16 +1,22 @@
+pub mod py_constants;
+pub mod py_core;
 pub mod py_model;
 
-pub mod constants;
-pub mod py_core;
+pub use py_constants::*;
+pub use py_core::py_closure::*;
+pub use py_core::py_cond::*;
+pub use py_core::py_model_core::*;
+pub use py_model::py_doc::*;
+pub use py_model::py_elif::*;
+pub use py_model::py_for::*;
+pub use py_model::py_func::*;
+pub use py_model::py_if::*;
+pub use py_model::py_line::*;
+pub use py_model::py_while::*;
 
 #[cfg(test)]
 mod tests {
-    use crate::constants::PY_TRUE;
-    use crate::py_core::py_closure::PyClosure;
-    use crate::py_core::py_cond::PyCond;
-    use crate::py_core::py_model_core::PyModelCore;
-    use crate::py_model::py_func::PyFunc;
-    use crate::py_model::py_if::PyIf;
+    use super::*;
     use std::fs::File;
 
     #[test]
